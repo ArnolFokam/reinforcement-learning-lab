@@ -1,0 +1,11 @@
+- While **supervised learning** learn from labels and **unsupervised learning** learns the structure of unlabelled data, **reinforncement learning** uses an **agent** to interact with an **envoriment** by performing set of actions that influence the environment and maximizes a reward or a set reward.
+- Reinforncement learning will require trade-offs between *exploartion* and *exploration* which involves try set of actions get the an expected estimate of the action or set of actions that are beneficiary to the agent's goal.
+- There are three components in reinforcement learning:
+	- **Policy:**  Describes the behaviour of an agent with respect to the current of state of the environment.
+	- **Reward Signal:** Acts as a feedback to the agent with respect to a particular action taken.
+	- **Value Function:** Serves as an estimate of the expected reward of the agent in the long run.
+	- **Model *(Optional)*:** This is the model of an environment for the case of a model-based RL where  we have an explicit model of the environment.
+- Model-free RL helps an agent generalize to its environment by letting it build a model of the world for itself. Some examples are:
+	- Playing against and oponent when you don't know how the oponents will react to your actions.
+	- Playing a video game only by use the rgb colored pixel in the game.
+- Model-based RL has a model of the environment that the model can use to inform update its policy.
