@@ -23,6 +23,15 @@ $$
 Q_t(a)= Q_{t - 1}(a)+ \frac{1}{N_t(a)} (R_{N_t(a)} - Q_{t - 1}(a))
 
 $$
+- This in effect says that, to get a new estimate take what we have previous and *a fraction of our error in way thought we should have gotten*.
+- If you play close attention to the function, you can see a pattern. Let us say we replace the fraction in the second term by a fraction $\alpha$
+$$
+
+Q_t(a)= Q_{t - 1}(a)+ \alpha (R_{N_t(a)} - Q_{t - 1}(a))
+
+$$
+- When  $\alpha=0$, we are literally telling our agent to forget about the <span style="color:green"> next action</span>, all what matters is the <span style="color:blue">intial action</span>. However, when $\alpha=1$, we are telling it to forget about the <span style="color:blue">intial action</span>, what matters is the <span style="color:green">next action</span>.
+- Therefore $\alpha$ is parameter the influence the amout influence past actions have on future actions during decision making.
 ### Solving Methods
 - One way to solve this problem is to greedily choose the action that has the maximum expected gain **(greedy)**. 
 - However, one problem of this approach is that we have no initial knowledge of how any actions influences our gains. Therefore, we will inevitably always rely on random guesses which might not necessarily lead to the most optimal solution in a long run.
