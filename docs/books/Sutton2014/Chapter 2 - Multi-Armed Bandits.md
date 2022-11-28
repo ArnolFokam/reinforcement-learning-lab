@@ -12,4 +12,4 @@ $$
 - One way to solve this problem is to greedily choose the action that has the maximum expected gain (greedy). 
 - However, one problem of this approach is that we have no initial knowledge of how any actions influences our gains. Therefore, we will inevitably always rely on random guesses which might not necessarily lead to the most optimal solution in a long run.
 - Another popular method is to continue being greedy while ocasionally sampling other actions from our set with a probability $\epsilon$. Such methods are called $\epsilon$-greedy methods.
-- Mult-armed bandit problems are good problems that helps us showcase the need for a balance between exploration and exploitation in reinforcement learning,
+- Mult-armed bandit problems are good problems that helps us showcase the need for a balance between exploration and exploitation in reinforcement learning
