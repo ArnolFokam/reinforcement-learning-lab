@@ -30,8 +30,9 @@ $$
 Q_t(a)= Q_{t - 1}(a)+ \alpha (R_{N_t(a)} - Q_{t - 1}(a))
 
 $$
-- When  $\alpha=0$, we are literally telling our agent to forget about the <span style="color:green"> next action</span>, all what matters is the <span style="color:blue">intial action</span>. However, when $\alpha=1$, we are telling it to forget about the <span style="color:blue">intial action</span>, what matters is the <span style="color:green">next action</span>.
-- Therefore $\alpha$ is parameter the influence the amout influence past actions have on future actions during decision making.
+- When  $\alpha=0$, we are literally telling our agent to forget about the <span style="color:green"> next reward</span>, all what matters is the <span style="color:blue">previous reward</span>. However, when $\alpha=1$, we are telling it to forget about the <span style="color:blue">previous reward</span>, what matters is the <span style="color:green">next reward</span>.
+- Therefore $\alpha$ is parameter the influence the amout influence past rewards have on future rewards during decision making.
+- When this parameters is set to $\frac{1}{N_t(a)}$, calculating $Q_t(a)$ gives average reward for that action according to a uniform distribution. 
 ### Solving Methods
 - One way to solve this problem is to greedily choose the action that has the maximum expected gain **(greedy)**. 
 - However, one problem of this approach is that we have no initial knowledge of how any actions influences our gains. Therefore, we will inevitably always rely on random guesses which might not necessarily lead to the most optimal solution in a long run.
