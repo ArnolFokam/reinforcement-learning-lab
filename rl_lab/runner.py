@@ -28,7 +28,7 @@ def run_bandits_experiments(agents_specs, environment, timesteps, num_actions, n
         for name in agents:
             # create a new agent for each experiment
             # all agent interact on the same environment (but not at once).
-            agent = agents_specs[name]["class"](list(actions), timesteps, env, **agents[name]["params"])
+            agent = agents_specs[name]["agent"](list(actions), timesteps, env, **agents[name]["params"])
             agent.explore()
             
             # update metrics average over experiments

@@ -28,7 +28,7 @@ class Jumper:
         assert isinstance(allowed_jumps, list) and len(allowed_jumps) > 1
         self.expected_rewards = [np.random.random() for _ in range(len(self.allowed_jumps))]
         
-    def select_next_action(self, step, action_count):
+    def select_next_action(self, step, action_count=0.0):
         if self.action_selection == "UCB":
             return 0
         else:

@@ -4,10 +4,10 @@ def set_plot_properties(plot, title, x_label, y_label):
     plot.set_ylabel(y_label)
     plot.legend(bbox_to_anchor=(1.3, 0.5))
 
-def plot_lines(plot, data, x, y, title, x_label, y_label):
+def plot_lines(plot, data, x_values, y_key, title, x_label, y_label):
     for name in data:
-        plot.plot(data[name][x], 
-                data[name][y],
+        plot.plot(x_values, 
+                data[name][y_key],
                 color=data[name]["color"],
                 label=name)
     
