@@ -2,7 +2,6 @@ from typing import Any, Dict
 import numpy as np
 
 from rl_lab.environments.bandits import Environment
-from rl_lab.agents.bandits import Agent
 
 def run_bandits_experiments(agents_specs: Dict[str, Any], 
                             environment: Environment, 

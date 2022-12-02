@@ -83,7 +83,7 @@ def plot_lines(plot: Axes, data: Dict[str, Union[str, List[Union[int, str]]]],
     
 
 
-def plot_bars(plot: Axes, data: Dict[str, Union[str, List[Union[int, str]]]], bins: int, 
+def plot_bars(plot: Axes, data: Dict[str, Union[str, List[Union[int, str]]]], bins: List[int], 
               y_key: str, title: str, x_label: str, y_label: str, offset: float =0.0) -> Axes:
     """
     Plot multiple sets of bars on the same plot
@@ -101,8 +101,8 @@ def plot_bars(plot: Axes, data: Dict[str, Union[str, List[Union[int, str]]]], bi
             "color": "red"
         }
         
-    bins : List[Union[int, float]]
-        number of bins to use
+    bins : List[int]
+        bins to use
         
     y_key : Axes 
         key to get the values of the y-axis in the dictionary data

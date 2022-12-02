@@ -4,9 +4,6 @@ class Environment:
     pass
 
 class BernoulliEnvironment(Environment):
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-        
     def cast(self, reward):
         """
         Cast the reward obtained accoring to a Bernoulli distribution
@@ -60,7 +57,6 @@ class LineWalkEnvironment(BernoulliEnvironment):
     """
     
     def __init__(self, line_length, **kwargs) -> None:
-        super().__init__(line_length, **kwargs)
         """
         Initialize the environment by randomly chosing:
             - The length of our line
