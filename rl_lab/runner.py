@@ -1,15 +1,13 @@
+from typing import Any, Dict
 import numpy as np
 
 from rl_lab.environments.bandits import Environment
 from rl_lab.agents.bandits import Agent
 
-AgentSpecs = type('AgentSpecs', (), {})
-ExperimentResults = type('ExperimentResults', (), {})
-
-def run_bandits_experiments(agents_specs: AgentSpecs, 
+def run_bandits_experiments(agents_specs: Dict[str, Any], 
                             environment: Environment, 
                             timesteps, num_actions, 
-                            num_experiments, line_length) -> ExperimentResults:
+                            num_experiments, line_length) -> Dict[str, Any]:
     """
     Run multiple bandit experiments with different agents but the same environment.
 
@@ -17,7 +15,19 @@ def run_bandits_experiments(agents_specs: AgentSpecs,
     ----------
         
     agents_specs : AgentSpecs 
-        specification of various agents that will interact with environment.
+        specification of various agents that will interact with environment. 
+        This is a dictionay of agent configurations.
+        
+        Example:
+
+        specs = {"agent name": {
+            "agent": AgentClass,
+            "params": {
+                agent class parameters...
+            },
+            "color": "red"
+        }}
+
         
     environment: Environment
         environment in which the agents will evolve.
@@ -33,7 +43,15 @@ def run_bandits_experiments(agents_specs: AgentSpecs,
         
     line_length : int
         length of the line on which our agents are positioned
-        
+    
+    Returns
+    -------
+    Dict[str, Any]
+        results of the data. The results are just dictionary of list of values. 
+        Where each key is an agent and each list contains a specific set of values 
+        represent the results of our experiments. Additional, this data structure 
+        contains any other information required for plotting. It mostly consists 
+        of properties copied from the 'specs' data structure
     """
     
     agents = {

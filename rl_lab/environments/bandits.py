@@ -16,7 +16,11 @@ class BernoulliEnvironment(Environment):
         
         step : int
             step value of the agent's jump
-
+            
+        Returns
+        -------
+            int
+            casted reward
         """
         
         if np.random.random() < reward:
@@ -83,7 +87,11 @@ class LineWalkEnvironment(BernoulliEnvironment):
         
         line_length : int
             length of the line on which our agent is positioned
-
+            
+        Returns
+        -------
+            int
+            goal position in the line
         """
         # sample the position of the agent while 
         # excluding the goal position
@@ -91,7 +99,7 @@ class LineWalkEnvironment(BernoulliEnvironment):
         tmp.remove(goal)
         return np.random.choice(tmp)
     
-    def get_reward(self, step):
+    def get_reward(self, jump):
         """
         Calculate the true reward from the jump
 
@@ -102,10 +110,10 @@ class LineWalkEnvironment(BernoulliEnvironment):
             step value of the agent's jump
 
         """
-        agent_position = self.agent_position + step
+        agent_position = self.agent_position + jump
         return 1 / (np.abs(self.goal_position - agent_position) + 1)
         
-    def jump(self, step):
+    def jump(self, jump):
         """
         Cast the reward obtained accoring to a Bernoulli distribution
         
@@ -114,7 +122,11 @@ class LineWalkEnvironment(BernoulliEnvironment):
         
         step : int
             step value of the agent's jump
-
+            
+        Returns
+        -------
+            int
+            casted reward
         """
-        reward = self.get_reward(step)
+        reward = self.get_reward(jump)
         return self.cast(reward)

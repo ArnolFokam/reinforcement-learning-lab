@@ -117,7 +117,11 @@ class Jumper:
         
         step : int
             current timesptep of the exploration
-
+            
+        Returns
+        -------
+            int
+            index of the selected action
         """
         if self.action_selection == "UCB":
             return 0
@@ -132,7 +136,11 @@ class Jumper:
         
         step : int
             current timesptep of the exploration
-
+            
+        Returns
+        -------
+            float
+            reward obtain at time step 'step'
         """
         if np.random.random() > self.epsilon:
             step_idx = self.select_action(step)
@@ -152,7 +160,8 @@ class Jumper:
         return reward
     
     def explore(self):
-        """Explore the environment over timesteps
+        """
+        Explore the environment over timesteps
         """
         
         for step in range(1, self.timesteps + 1):

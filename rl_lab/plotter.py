@@ -1,4 +1,4 @@
-from ast import List
+from typing import List
 from typing import Dict, Union
 from matplotlib.axes import Axes
 
@@ -21,7 +21,12 @@ def set_plot_properties(plot: Axes, title: str, x_label: str, y_label: str) -> A
         
     y_label : str
         y label of the plot
+        
+    Returns
+    -------
+        Axes
     """
+    
     plot.set_title(title)
     plot.set_xlabel(x_label)
     plot.set_ylabel(y_label)
@@ -61,6 +66,10 @@ def plot_lines(plot: Axes, data: Dict[str, Union[str, List[Union[int, str]]]],
         
     y_label : str
         y label of the plot
+        
+    Returns
+    -------
+        Axes
     """
     for name in data:
         plot.plot(x_values, 
@@ -106,6 +115,10 @@ def plot_bars(plot: Axes, data: Dict[str, Union[str, List[Union[int, str]]]], bi
         
     y_label : str
         y label of the plot
+        
+    Returns
+    -------
+        Axes
     """
     width = (1.0 / len(data)) - 0.01
     
