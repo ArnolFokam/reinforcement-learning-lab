@@ -34,8 +34,15 @@ And that's it. Now you can run all the notebooks of this project.
 
 If you want to use the functions from the library, you can easily do that by importing the library in your python file or notebook.
 
+Here is am
+
 ```python
 from rl_lab.agents.bandits import Jumper
+from rl_lab.environments.bandits import LineWalkEnvironment
 
+allowed_jumps = [-5, -1, 1, 5]
+timesteps = 40
 
+environment = LineWalkEnvironment(max_scale=256)
+agent = Jumper(allowed_jumps, timesteps, environment)
 ```
