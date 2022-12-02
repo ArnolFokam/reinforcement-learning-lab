@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def run_bandits_experiments(agents_specs, environment, timesteps, num_actions, num_experiments, line_scale):
+def run_bandits_experiments(agents_specs, environment, timesteps, num_actions, num_experiments, max_line_length):
         
     agents = {
         agent: {
@@ -14,11 +14,11 @@ def run_bandits_experiments(agents_specs, environment, timesteps, num_actions, n
     
     for idx in range(1, num_experiments + 1):
     
-        env = environment(line_scale)
+        env = environment(max_line_length)
 
         # create available 10 jumps such that 
         # there exists only few possible jumps 
-        actions = np.random.randint(-line_scale, line_scale, num_actions)
+        actions = np.random.randint(-max_line_length, max_line_length, num_actions)
         
         # sort action in increasing reward 
         rewards_per_actions = np.vectorize(lambda action: env.get_reward(action))(actions)

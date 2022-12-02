@@ -1,15 +1,15 @@
 import numpy as np
 
 class LineWalkEnvironment:
-    def __init__(self, max_scale, **kwargs) -> None:
-        self.max_scale = max_scale
-        self.goal = np.random.randint(0, self.max_scale)
-        self.agent_position = self.get_new_agent_position(self.max_scale, self.goal)
+    def __init__(self, max_line_length, **kwargs) -> None:
+        self.max_line_length = max_line_length
+        self.goal = np.random.randint(0, self.max_line_length)
+        self.agent_position = self.get_new_agent_position(self.max_line_length, self.goal)
         
-    def get_new_agent_position(self, max_scale, goal):
+    def get_new_agent_position(self, max_line_length, goal):
         # sample the position of the agent while 
         # excluding the goal position
-        tmp = list(range(max_scale))
+        tmp = list(range(max_line_length))
         tmp.remove(goal)
         return np.random.choice(tmp)
     
