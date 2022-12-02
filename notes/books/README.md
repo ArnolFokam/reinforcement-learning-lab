@@ -1,7 +1,12 @@
 # Books
 
-This directory contains books I have read or currently reading.
+This directory contains notes about books I have read or currently reading.
+
+## Status
+
+- ✅ (Finished)
+- 🔎 (Reading)
 
 ## Content
 
-- [Reinforcement Learning: An Introduction (Adaptive Computation and Machine Learning)](/notes/books/ReinforcementLearning.AnIntroduction/)
+- 🔎 [Reinforcement Learning: An Introduction (Adaptive Computation and Machine Learning)](/notes/books/ReinforcementLearning.AnIntroduction/)
