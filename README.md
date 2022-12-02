@@ -47,3 +47,7 @@ max_line_length = 256
 environment = LineWalkEnvironment(max_line_legnth)
 agent = Jumper(allowed_jumps, timesteps, environment)
 ```
+
+## Contributions
+
+Since these are personal notes, I do not expect any addition of new algorithms. However, feel free to raise an issue if you spotted an error somewhere or just wish to discuss about a particular concept implemented in this project.
