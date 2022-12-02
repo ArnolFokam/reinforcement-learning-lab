@@ -62,7 +62,8 @@ class Jumper:
                  step_value = 0.5, 
                  action_selection = "base", # ["base", "UCB"]
                  **kwargs) -> None:
-        """Initialize Jumper
+        """
+        Initialize the agent
 
         Parameters
         ----------
