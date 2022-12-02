@@ -48,6 +48,6 @@ environment = LineWalkEnvironment(max_line_legnth)
 agent = Jumper(allowed_jumps, timesteps, environment)
 ```
 
-## Contributions
+## Contributing
 
-Since these are personal notes, I do not expect any addition of new algorithms. However, feel free to raise an issue if you spotted an error somewhere or just wish to discuss about a particular concept implemented in this project.
+Since these are my personal notes, I do not expect any addition of new algorithms or concepts not touched in the notes. However, feel free to raise an issue if you spotted an error somewhere or just wish to discuss a particular concept implemented in this project.
