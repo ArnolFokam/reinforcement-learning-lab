@@ -42,7 +42,8 @@ from rl_lab.environments.bandits import LineWalkEnvironment
 
 allowed_jumps = [-5, -1, 1, 5]
 timesteps = 40
+max_line_length = 256
 
-environment = LineWalkEnvironment(max_scale=256)
+environment = LineWalkEnvironment(max_line_legnth)
 agent = Jumper(allowed_jumps, timesteps, environment)
 ```
