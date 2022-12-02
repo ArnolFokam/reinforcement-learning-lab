@@ -18,7 +18,7 @@ class Jumper:
         epsilon parameter for e-greedy methods
         
     timesteps : int
-        number timespteps for exploration
+        number of timespteps for exploration
         
     step_value : int
         step value for the temporal difference learning

@@ -1,9 +1,11 @@
+from ast import List
+from typing import Dict, Union
 from matplotlib.axes import Axes
 
 
-def set_plot_properties(plot: Axes, title: str, x_label: str, y_label: str):
+def set_plot_properties(plot: Axes, title: str, x_label: str, y_label: str) -> Axes:
     """
-    Seet properties of the plot
+    Set properties of the plot
 
     Parameters
     ----------
@@ -27,7 +29,8 @@ def set_plot_properties(plot: Axes, title: str, x_label: str, y_label: str):
     
     return plot
 
-def plot_lines(plot, data, x_values, y_key, title, x_label, y_label):
+def plot_lines(plot: Axes, data: Dict[str, Union[str, List[Union[int, str]]]], 
+               x_values: List[Union[int, float]], y_key: str, title: str, x_label: str, y_label: str) -> Axes:
     """
     Plot multiple lines on the same plot
 
@@ -37,7 +40,7 @@ def plot_lines(plot, data, x_values, y_key, title, x_label, y_label):
     plot : Axes 
         plot for the visualization
         
-    data: 
+    data: Dict[str, Union[str, List[Union[int, str]]]]
         data sctructure structure containing all the ploting information.
         data = {
             "plot1": [0.2, 0.5, 0.8, 0.9]
@@ -71,7 +74,8 @@ def plot_lines(plot, data, x_values, y_key, title, x_label, y_label):
     
 
 
-def plot_bars(plot, data, bins, y, title, x_label, y_label, offset=0.0):
+def plot_bars(plot: Axes, data: Dict[str, Union[str, List[Union[int, str]]]], bins: int, 
+              y_key: str, title: str, x_label: str, y_label: str, offset: float =0.0) -> Axes:
     """
     Plot multiple sets of bars on the same plot
 
@@ -81,7 +85,7 @@ def plot_bars(plot, data, bins, y, title, x_label, y_label, offset=0.0):
     plot : Axes 
         plot for the visualization
         
-    data: 
+    data: Dict[str, Union[str, List[Union[int, str]]]]
         data sctructure structure containing all the ploting information.
         data = {
             "plot1": [0.2, 0.5, 0.8, 0.9]
@@ -107,7 +111,7 @@ def plot_bars(plot, data, bins, y, title, x_label, y_label, offset=0.0):
     
     for name in data:
         plot.bar(bins + offset*width, 
-                data[name][y], 
+                data[name][y_key], 
                 color=data[name]["color"],
                 label=name,
                 width=width)
