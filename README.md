@@ -13,4 +13,5 @@ Therefore, this repo was created to store stuffs learned in reinforcement learni
 
 ### What is included on this project?
 
-- Personal [notes](https://github.com/ArnolFokam/reinforcement-learning-lab/tree/main/notes) from [books](https://github.com/ArnolFokam/reinforcement-learning-lab/tree/main/notes/books) and [papers](https://github.com/ArnolFokam/reinforcement-learning-lab/tree/main/notes/papers) read. I recommend reading them through [obsidian](https://obsidian.md/) to easily navigate through the notes.
+- ✍️ Personal [notes](/notes) from [books](/notes/books) and [papers](/notes/papers) read. I recommend reading them through [obsidian](https://obsidian.md/) to easily navigate through the notes.
+- Python [notebooks](/notebooks) that demonstrated the concepts learned with visualizations included as much as possible.
