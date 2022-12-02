@@ -34,7 +34,7 @@ And that's it. Now you can run all the notebooks of this project.
 
 If you want to use the functions from the library, you can easily do that by importing the library in your python file or notebook.
 
-Here is am
+Here is the code to initialize a bandit algorithm and its algorithm.
 
 ```python
 from rl_lab.agents.bandits import Jumper
