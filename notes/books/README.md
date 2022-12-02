@@ -4,7 +4,7 @@ This directory contains notes about books I have read or currently reading.
 
 ## Status
 
-- ✅ (Finished)
+- ☑️ (Finished)
 - 🔎 (Reading)
 
 ## Content
