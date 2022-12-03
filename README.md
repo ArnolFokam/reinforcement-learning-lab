@@ -14,7 +14,7 @@ Therefore, this repo was created to store stuffs learned in reinforcement learni
 ## What is included on this project?
 
 - ✍️ Personal [notes](/notes) from [books](/notes/books) and [papers](/notes/papers) read. I recommend reading them through [obsidian](https://obsidian.md/) to easily navigate through the notes.
-- The Python library 📚 for this project [rl_lab](/rl_lab/) that contains implementation of  different algorithms learnt and re-usable components to perform reduntant tasks such as politting graphs and training agents.
+- The Python library 📚 for this project [rl_lab](/rl_lab/) that contains implementation of  different algorithms learnt and re-usable components to perform reduntant tasks such as plotting graphs and training agents.
 - Python [notebooks](/notebooks) 📓 that demonstrates the concepts learned with visualizations included as much as possible.
 
 ## Set Up Environment
