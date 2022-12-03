@@ -9,7 +9,7 @@
 
 I like styding various fields of mathematics and computer science, with a particular bias towards artificially intelligent algorithms. Therefore it would be nice to store all the knowledge I have gathered so far during my learning journey.
 
-## What is included on this project?
+## What is included in this project?
 
 - ✍️ Personal [notes](/notes) from [books](/notes/books) and [papers](/notes/papers) read. I recommend reading them through [obsidian](https://obsidian.md/) to easily navigate through the notes.
 - The Python library 📚 for this project [rl_lab](/rl_lab/) that contains implementation of  different algorithms learnt and re-usable components to perform reduntant tasks such as plotting graphs and training agents.
