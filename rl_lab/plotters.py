@@ -3,7 +3,7 @@ from typing import Dict, List, Union
 from matplotlib.axes import Axes
 
 
-def set_plot_properties(plot: Axes, title: str, x_label: str, y_label: str) -> Axes:
+def set_plot_info(plot: Axes, title: str, x_label: str, y_label: str) -> Axes:
 
     """
     Set properties of the plot
@@ -81,9 +81,10 @@ def plot_lines(
         Axes
     """
     for name in data:
-        plot.plot(x_values, data[name][y_key], color=data[name]["color"], label=name)
+        color = data[name]["color"]
+        plot.plot(x_values, data[name][y_key], color=color, label=name)
 
-    set_plot_properties(plot, title, x_label, y_label)
+    set_plot_info(plot, title, x_label, y_label)
 
     return plot
 
@@ -145,6 +146,6 @@ def plot_bars(
         )
         offset += 1
 
-    set_plot_properties(plot, title, x_label, y_label)
+    set_plot_info(plot, title, x_label, y_label)
 
     return plot

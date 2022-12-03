@@ -60,8 +60,8 @@ def run_bandits_experiments(
         agent: {
             "params": specs["params"],  # parameters of the learning agent
             "color": specs["color"],  # color for visualization
-            "average_reward_per_timesteps": np.zeros(timesteps),
-            "average_reward_per_actions": np.zeros(num_actions),
+            "timesteps_reward": np.zeros(timesteps),
+            "actions_reward": np.zeros(num_actions),
         }
         for agent, specs in agents_specs.items()
     }
@@ -87,17 +87,14 @@ def run_bandits_experiments(
             )
             agent.explore()
 
-            # update metrics average over experiments
-            agents[name]["average_reward_per_timesteps"] = agents[name][
-                "average_reward_per_timesteps"
-            ] + (1.0 / idx) * (
-                agent.rewards_per_timesteps
-                - agents[name]["average_reward_per_timesteps"]
-            )
-            agents[name]["average_reward_per_actions"] = agents[name][
-                "average_reward_per_actions"
-            ] + (1.0 / idx) * (
-                agent.expected_rewards - agents[name]["average_reward_per_actions"]
-            )
+            # update rewards average (per timesteps) over experiments
+            agents[name]["timesteps_reward"] += +(1.0 / idx) * (
+                agent.rewards_per_timesteps - agents[name]["timesteps_reward"]
+            )  # noqa
+
+            # update rewards average (per actions) over experiments
+            agents[name]["actions_areward"] += (1.0 / idx) * (
+                agent.expected_rewards - agents[name]["actions_reward"]
+            )  # noqa
 
     return agents

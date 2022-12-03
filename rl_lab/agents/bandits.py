@@ -161,9 +161,10 @@ class Jumper:
         # by recursively computing the average
         if not self.has_constant_step:
             self.actions_counts[step_idx] += 1
-            self.expected_rewards[step_idx] = self.expected_rewards[step_idx] + (
-                1.0 / self.actions_counts[step_idx]
-            ) * (reward - self.expected_rewards[step_idx])
+            step_value = 1.0 / self.actions_counts[step_idx]
+            self.expected_rewards[step_idx] += (step_value) * (
+                reward - self.expected_rewards[step_idx]
+            )  # noqa
         else:
             self.expected_rewards[step_idx] = self.expected_rewards[
                 step_idx
