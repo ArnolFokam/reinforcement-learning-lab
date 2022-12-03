@@ -7,7 +7,7 @@
 
 ## Why this project?
 
-I like styding various fields of mathematics and computer science, with a particular bias towards artificially intelligent algorithms. Therefore it would be nice to store all the knowledge I have gathered so far during my learning journey Therefore, this repo was created to store stuffs learned so far.
+I like styding various fields of mathematics and computer science, with a particular bias towards artificially intelligent algorithms. Therefore it would be nice to store all the knowledge I have gathered so far during my learning journey.
 
 ## What is included on this project?
 
