@@ -5,3 +5,13 @@ repos:
     -   id: check-yaml
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
+-   repo: local
+    hooks:
+      - id: format
+        name: code-formatter
+        entry: make format
+        language: system
+      - id: pytest
+        name: test-check
+        entry: make test
+        language: system
