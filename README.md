@@ -7,7 +7,7 @@
 
 ## Why this project?
 
-I like learning about various fields of mathematics and computer science, with a particular bias towards artificially intelligent algorithms. Therefore it would be nice to store all the knowledge I have gathered so far during my learning journey.
+I like styding various fields of mathematics and computer science, with a particular bias towards artificially intelligent algorithms. Therefore it would be nice to store all the knowledge I have gathered so far during my learning journey.
 
 Therefore, this repo was created to store stuffs learned in reinforcement learning which describes a set of algorithms that aims at reinforcing a certain behaviour from an agent by assigning feedbacks to the action it takes over time. Not the best definition but... don't wanna spend too much time on this ReadMe.
 
