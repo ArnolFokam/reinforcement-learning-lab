@@ -32,10 +32,10 @@ Q_t(a)= Q_{t - 1}(a)+ \alpha (R_{N_t(a)} - Q_{t - 1}(a))
 $$
 - When  $\alpha=0$, we are literally telling our agent to forget about the <span style="color:green"> next reward</span>, all what matters is the <span style="color:blue">previous reward</span>. However, when $\alpha=1$, we are telling it to forget about the <span style="color:blue">previous reward</span>, what matters is the <span style="color:green">next reward</span>.
 - Therefore $\alpha$ is parameter the influence the amout influence past rewards have on future rewards during decision making.
-- When this parameters is set to $\frac{1}{N_t(a)}$, calculating $Q_t(a)$ gives average reward for that action according to a uniform distribution. 
+- When this parameters is set to $\frac{1}{N_t(a)}$, calculating $Q_t(a)$ gives average reward for that action according to a uniform distribution.
 - Setting this parameter to a constant value if beneficial to non-stationary problems where the rewards can change over time because this gives the ability to our agent to focus on the most recent reward obtained from a peraticular action.
 ### Greed and $\epsilon$-Greedy Methods
-- One way to solve this problem is to greedily choose the action that has the maximum expected gain **(greedy)**. 
+- One way to solve this problem is to greedily choose the action that has the maximum expected gain **(greedy)**.
 - However, one problem of this approach is that we have no initial knowledge of how any actions influences our gains. Therefore, we will inevitably always rely on random guesses which might not necessarily lead to the most optimal solution in a long run.
 - Another popular method is to continue being greedy while ocasionally sampling other actions from our set with a probability $\epsilon$. Such methods are called $\epsilon$-greedy methods.
 - Mult-armed bandit problems are good problems that helps us showcase the need for a balance between exploration and exploitation in reinforcement learning

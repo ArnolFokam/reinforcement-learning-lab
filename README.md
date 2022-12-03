@@ -19,13 +19,14 @@ Therefore, this repo was created to store stuffs learned in reinforcement learni
 
 ## Set Up Environment
 
-There are certain steps you need to do to be able to run the notebooks. 
+There are certain steps you need to do to be able to run the notebooks.
 
 Assuming you have a suitable [pip](https://docs.python.org/3/library/venv.html) or [conda](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) environment at your disposal, please run the following commands.
 
 ```bash
 pip install -r requirements.txt
 pip install -e .
+pre-commit install
 ```
 
 And that's it. Now you can run all the notebooks of this project.
