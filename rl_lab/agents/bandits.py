@@ -155,7 +155,7 @@ class Jumper:
         else:
             step_idx = np.random.randint(len(self.allowed_jumps))
 
-        reward = self.environment.jump(self.allowed_jumps[step_idx])
+        reward = self.environment.get_reward(self.allowed_jumps[step_idx])
 
         # update the cumulative reward of our agent
         # by recursively computing the average

@@ -2,7 +2,8 @@ import numpy as np
 
 
 class Environment:
-    pass
+    def cast(self, reward):
+        return reward
 
 
 class BernoulliEnvironment(Environment):
@@ -113,22 +114,5 @@ class LineWalkEnvironment(BernoulliEnvironment):
 
         """
         agent_position = self.agent_position + jump
-        return 1 / (np.abs(self.goal_position - agent_position) + 1)
-
-    def jump(self, jump):
-        """
-        Cast the reward obtained accoring to a Bernoulli distribution
-
-        Parameters
-        ----------
-
-        step : int
-            step value of the agent's jump
-
-        Returns
-        -------
-            int
-            casted reward
-        """
-        reward = self.get_reward(jump)
+        reward = 1 / (np.abs(self.goal_position - agent_position) + 1)
         return self.cast(reward)
