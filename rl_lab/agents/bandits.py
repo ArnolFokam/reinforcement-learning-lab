@@ -1,5 +1,7 @@
 import numpy as np
 
+from rl_lab.helpers import stable_softmax
+
 
 class GreedyBandit:
     """
@@ -24,9 +26,6 @@ class GreedyBandit:
 
     allowed_actions: List[int]
         the different step values to use
-
-    has_constant_step:
-        does the step value changes over time
 
     actions_counts: List[int]
         the number times each jumps has been performed
@@ -55,9 +54,8 @@ class GreedyBandit:
         allowed_actions,
         timesteps,
         environment,
-        epsilon=0,
-        has_constant_step=False,
-        step_value=0.5,
+        epsilon,
+        step_value=None,
         **kwargs
     ) -> None:
         """
@@ -92,21 +90,27 @@ class GreedyBandit:
         assert 0 <= epsilon <= 1.0
         assert isinstance(allowed_actions, list) and len(allowed_actions) > 1
 
-        self.reward = 0
         self.epsilon = epsilon
+        self.average_reward = 0
         self.timesteps = timesteps
         self.step_value = step_value
         self.environment = environment
         self.allowed_actions = allowed_actions
-        self.has_constant_step = has_constant_step
         self.actions_counts = np.zeros(len(allowed_actions))
         self.rewards_per_timesteps = np.zeros(self.timesteps)
         self.expected_rewards = [
             np.random.random() for _ in range(len(self.allowed_actions))
         ]
 
+    def on_reward_obtained(self, reward, action_idx, step_value):
+        """
+        Just in case you might to add some
+        stuffs after the reward was obtained.
+        """
+        pass
+
     def get_step_value(self, action_idx):
-        if self.has_constant_step and self.step_value:
+        if self.step_value:
             return self.step_value
         else:
             return 1.0 / self.actions_counts[action_idx]
@@ -128,7 +132,7 @@ class GreedyBandit:
         """
         return np.argmax(self.expected_rewards)
 
-    def jump(self, step):
+    def act(self, step):
         """Jump and update reward
 
         Parameters
@@ -149,10 +153,15 @@ class GreedyBandit:
 
         reward = self.environment.get_reward(self.allowed_actions[action_idx])
 
-        # update the cumulative reward of our agent
-        # by recursively computing the average
         self.actions_counts[action_idx] += 1
         step_value = self.get_step_value(action_idx)
+
+        # callbacks for update shenanigans
+        # after the calculation of the reward
+        self.on_reward_obtained(reward, action_idx, step_value)
+
+        # update the cumulative reward of our agent
+        # by recursively computing the average
         self.expected_rewards[action_idx] += (step_value) * (
             reward - self.expected_rewards[action_idx]
         )  # noqa
@@ -164,9 +173,11 @@ class GreedyBandit:
         """
 
         for step in range(1, self.timesteps + 1):
-            reward = self.jump(step)
-            self.reward = self.reward + (1.0 / step) * (reward - self.reward)
-            self.rewards_per_timesteps[step - 1] = self.reward
+            reward = self.act(step)
+            self.average_reward = self.average_reward + (1.0 / step) * (
+                reward - self.average_reward
+            )
+            self.rewards_per_timesteps[step - 1] = self.average_reward
 
 
 class UCBBandit(GreedyBandit):
@@ -176,7 +187,7 @@ class UCBBandit(GreedyBandit):
     Attributes
     ----------
 
-    confidence_level: float
+    c: float
         parameter that controls the amout of uncertainty that affects the agent
     """
 
@@ -186,25 +197,23 @@ class UCBBandit(GreedyBandit):
         timesteps,
         environment,
         epsilon=0,
-        has_constant_step=False,
         step_value=0.5,
-        confidence_level=0.1,
+        c=0.1,
         **kwargs
     ) -> None:
 
-        assert confidence_level > 0
+        assert c > 0
 
         super().__init__(
             allowed_actions,
             timesteps,
             environment,
             epsilon,
-            has_constant_step,
             step_value,
-            **kwargs
+            **kwargs  # noqa
         )
 
-        self.confidence_level = confidence_level
+        self.c = c
 
     def select_action(self, step):
         """Select the jump to perform
@@ -220,21 +229,14 @@ class UCBBandit(GreedyBandit):
             int
             index of the selected action
         """
-        uncertainty = self.confidence_level * np.sqrt(
-            np.log(step) / (self.actions_counts + 1e-19)
-        )
+        uncertainty = self.c * np.sqrt(np.log(step) / (self.actions_counts + 1e-19))
         return np.argmax(self.expected_rewards + uncertainty)
 
 
-class GradientBandit(GreedyBandit):
+class GradientsBandit(GreedyBandit):
     """
-    Greedy bandit that can operate on various environments
+    Gradients bandit that can operate on various environments
 
-    Attributes
-    ----------
-
-    confidence_level: float
-        parameter that controls the amout of uncertainty that affects the agent
     """
 
     def __init__(
@@ -243,25 +245,46 @@ class GradientBandit(GreedyBandit):
         timesteps,
         environment,
         epsilon=0,
-        has_constant_step=False,
         step_value=0.5,
-        confidence_level=0.1,
         **kwargs
     ) -> None:
-
-        assert confidence_level > 0
 
         super().__init__(
             allowed_actions,
             timesteps,
             environment,
             epsilon,
-            has_constant_step,
             step_value,
-            **kwargs
+            **kwargs  # noqa
         )
 
-        self.confidence_level = confidence_level
+        self.preferences = np.zeros(len(allowed_actions))
+
+    def on_reward_obtained(self, reward, action_idx, step_value):
+        super().on_reward_obtained(reward, action_idx, step_value)
+        self.update_preferences(reward, action_idx, step_value)
+
+    def update_preferences(self, reward, action_idx, step_value):
+        """
+        update prefernecs for the action selection
+        """
+
+        # we choose the reward baseline to be the average reward
+        reward_baseline = self.average_reward
+        probs = stable_softmax(self.preferences)
+
+        # update preference for selected action
+        self.preferences[action_idx] += (
+            step_value * (reward - reward_baseline) * (1 - probs[action_idx])
+        )
+
+        # update preference for other actions
+        other_actions_idx = np.delete(
+            range(len(self.allowed_actions)), action_idx
+        )  # noqa
+        self.preferences[other_actions_idx] -= (
+            step_value * (reward - reward_baseline) * probs[other_actions_idx]
+        )  # noqa
 
     def select_action(self, step):
         """Select the jump to perform
@@ -277,7 +300,11 @@ class GradientBandit(GreedyBandit):
             int
             index of the selected action
         """
-        uncertainty = self.confidence_level * np.sqrt(
-            np.log(step) / (self.actions_counts + 1e-19)
-        )
-        return np.argmax(self.expected_rewards + uncertainty)
+        return np.random.choice(
+            len(self.allowed_actions),
+            1,
+            replace=False,
+            p=stable_softmax(self.preferences),
+        )[
+            0
+        ]  # noqa

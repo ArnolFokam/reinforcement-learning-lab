@@ -12,4 +12,4 @@ dev-env:
 format: dev-env
 	isort .
 	black .
-	flake8 .
+	flake8 --extend-ignore E501 .
