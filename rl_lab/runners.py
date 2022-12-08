@@ -93,7 +93,7 @@ def run_bandits_experiments(
             )  # noqa
 
             # update rewards average (per actions) over experiments
-            agents[name]["actions_areward"] += (1.0 / idx) * (
+            agents[name]["actions_reward"] += (1.0 / idx) * (
                 agent.expected_rewards - agents[name]["actions_reward"]
             )  # noqa
 

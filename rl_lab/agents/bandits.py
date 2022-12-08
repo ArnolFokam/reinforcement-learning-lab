@@ -22,7 +22,7 @@ class GreedyBandit:
     environment : LineWalkEnvironment
         environment to use
 
-    allowed_jumps: List[int]
+    allowed_actions: List[int]
         the different step values to use
 
     has_constant_step:
@@ -40,7 +40,7 @@ class GreedyBandit:
 
     Methods
     -------
-    select_action(step, action_count=0.0)
+    select_action()
         Select the next action to be performed
 
     jump(step)
@@ -52,7 +52,7 @@ class GreedyBandit:
 
     def __init__(
         self,
-        allowed_jumps,
+        allowed_actions,
         timesteps,
         environment,
         epsilon=0,
@@ -66,7 +66,7 @@ class GreedyBandit:
         Parameters
         ----------
 
-        allowed_jumps: List[int]
+        allowed_actions: List[int]
             the different step values to use
 
         timesteps : int
@@ -90,19 +90,19 @@ class GreedyBandit:
         """
 
         assert 0 <= epsilon <= 1.0
-        assert isinstance(allowed_jumps, list) and len(allowed_jumps) > 1
+        assert isinstance(allowed_actions, list) and len(allowed_actions) > 1
 
         self.reward = 0
         self.epsilon = epsilon
         self.timesteps = timesteps
         self.step_value = step_value
         self.environment = environment
-        self.allowed_jumps = allowed_jumps
+        self.allowed_actions = allowed_actions
         self.has_constant_step = has_constant_step
-        self.actions_counts = [0] * len(allowed_jumps)
+        self.actions_counts = np.zeros(len(allowed_actions))
         self.rewards_per_timesteps = np.zeros(self.timesteps)
         self.expected_rewards = [
-            np.random.random() for _ in range(len(self.allowed_jumps))
+            np.random.random() for _ in range(len(self.allowed_actions))
         ]
 
     def get_step_value(self, action_idx):
@@ -111,8 +111,9 @@ class GreedyBandit:
         else:
             return 1.0 / self.actions_counts[action_idx]
 
-    def select_action(self):
-        """Select the jump to perform
+    def select_action(self, step):
+        """
+        Select the jump to perform
 
         Parameters
         ----------
@@ -144,9 +145,9 @@ class GreedyBandit:
         if np.random.random() > self.epsilon:
             action_idx = self.select_action(step)
         else:
-            action_idx = np.random.randint(len(self.allowed_jumps))
+            action_idx = np.random.randint(len(self.allowed_actions))
 
-        reward = self.environment.get_reward(self.allowed_jumps[action_idx])
+        reward = self.environment.get_reward(self.allowed_actions[action_idx])
 
         # update the cumulative reward of our agent
         # by recursively computing the average
@@ -181,20 +182,20 @@ class UCBBandits(GreedyBandit):
 
     def __init__(
         self,
-        allowed_jumps,
+        allowed_actions,
         timesteps,
         environment,
         epsilon=0,
         has_constant_step=False,
         step_value=0.5,
         confidence_level=0.1,
-        *kwargs
+        **kwargs
     ) -> None:
 
         assert confidence_level > 0
 
         super().__init__(
-            allowed_jumps,
+            allowed_actions,
             timesteps,
             environment,
             epsilon,
@@ -203,7 +204,7 @@ class UCBBandits(GreedyBandit):
             **kwargs
         )
 
-        self.confidence_level = self.confidence_level
+        self.confidence_level = confidence_level
 
     def select_action(self, step):
         """Select the jump to perform
@@ -220,6 +221,6 @@ class UCBBandits(GreedyBandit):
             index of the selected action
         """
         uncertainty = self.confidence_level * np.sqrt(
-            np.log(step) / self.actions_counts
+            np.log(step) / (self.actions_counts + 1e-19)
         )
         return np.argmax(self.expected_rewards + uncertainty)
