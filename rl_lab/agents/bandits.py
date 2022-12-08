@@ -169,7 +169,64 @@ class GreedyBandit:
             self.rewards_per_timesteps[step - 1] = self.reward
 
 
-class UCBBandits(GreedyBandit):
+class UCBBandit(GreedyBandit):
+    """
+    Greedy bandit that can operate on various environments
+
+    Attributes
+    ----------
+
+    confidence_level: float
+        parameter that controls the amout of uncertainty that affects the agent
+    """
+
+    def __init__(
+        self,
+        allowed_actions,
+        timesteps,
+        environment,
+        epsilon=0,
+        has_constant_step=False,
+        step_value=0.5,
+        confidence_level=0.1,
+        **kwargs
+    ) -> None:
+
+        assert confidence_level > 0
+
+        super().__init__(
+            allowed_actions,
+            timesteps,
+            environment,
+            epsilon,
+            has_constant_step,
+            step_value,
+            **kwargs
+        )
+
+        self.confidence_level = confidence_level
+
+    def select_action(self, step):
+        """Select the jump to perform
+
+        Parameters
+        ----------
+
+        step : int
+            current timesptep of the exploration
+
+        Returns
+        -------
+            int
+            index of the selected action
+        """
+        uncertainty = self.confidence_level * np.sqrt(
+            np.log(step) / (self.actions_counts + 1e-19)
+        )
+        return np.argmax(self.expected_rewards + uncertainty)
+
+
+class GradientBandit(GreedyBandit):
     """
     Greedy bandit that can operate on various environments
 
