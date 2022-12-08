@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class Jumper:
+class GreedyBandit:
     """
     This is an agent that has the ability to interact in the environment
     :py:class:`rl_lab.environments.bandits.LineWalkEnvironment`.
@@ -13,9 +13,6 @@ class Jumper:
     ----------
     reward : int float
         the current average reward
-
-    action_selection : str
-        the selection process of reward. ["base", "UCB"]
 
     epsilon : str
         epsilon parameter for e-greedy methods
@@ -65,7 +62,6 @@ class Jumper:
         epsilon=0,
         has_constant_step=False,
         step_value=0.5,
-        action_selection="base",  # ["base", "UCB"]
         **kwargs
     ) -> None:
         """
@@ -98,26 +94,28 @@ class Jumper:
         """
 
         assert 0 <= epsilon <= 1.0
+        assert isinstance(allowed_jumps, list) and len(allowed_jumps) > 1
 
         self.reward = 0
-        self.action_selection = action_selection
         self.epsilon = epsilon
         self.timesteps = timesteps
         self.step_value = step_value
         self.environment = environment
         self.allowed_jumps = allowed_jumps
         self.has_constant_step = has_constant_step
-
-        if not self.has_constant_step:
-            self.actions_counts = [0] * len(allowed_jumps)
-
+        self.actions_counts = [0] * len(allowed_jumps)
         self.rewards_per_timesteps = np.zeros(self.timesteps)
-        assert isinstance(allowed_jumps, list) and len(allowed_jumps) > 1
         self.expected_rewards = [
             np.random.random() for _ in range(len(self.allowed_jumps))
         ]
 
-    def select_action(self, step):
+    def get_step_value(self, step):
+        if self.has_constant_step and self.step_value:
+            return self.step_value
+        else:
+            return 1.0 / self.actions_counts[step]
+
+    def select_action(self):
         """Select the jump to perform
 
         Parameters
@@ -131,10 +129,7 @@ class Jumper:
             int
             index of the selected action
         """
-        if self.action_selection == "UCB":
-            return 0
-        else:
-            return np.argmax(self.expected_rewards)
+        return np.argmax(self.expected_rewards)
 
     def jump(self, step):
         """Jump and update reward
@@ -159,17 +154,11 @@ class Jumper:
 
         # update the cumulative reward of our agent
         # by recursively computing the average
-        if not self.has_constant_step:
-            self.actions_counts[step_idx] += 1
-            step_value = 1.0 / self.actions_counts[step_idx]
-            self.expected_rewards[step_idx] += (step_value) * (
-                reward - self.expected_rewards[step_idx]
-            )  # noqa
-        else:
-            self.expected_rewards[step_idx] = self.expected_rewards[
-                step_idx
-            ] + self.step_value * (reward - self.expected_rewards[step_idx])
-
+        self.actions_counts[step_idx] += 1
+        step_value = self.get_step_value(step_idx)
+        self.expected_rewards[step_idx] += (step_value) * (
+            reward - self.expected_rewards[step_idx]
+        )  # noqa
         return reward
 
     def explore(self):
