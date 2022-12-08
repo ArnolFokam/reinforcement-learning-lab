@@ -3,11 +3,7 @@ import numpy as np
 
 class GreedyBandit:
     """
-    This is an agent that has the ability to interact in the environment
-    :py:class:`rl_lab.environments.bandits.LineWalkEnvironment`.
-    The agent is can jump to position in that environment given
-    a step value that indicates the amountof steps from the current
-    position for the jump. Note that this value can be -/+ ve
+    Greedy bandit that can operate on various environments
 
     Attributes
     ----------
@@ -109,11 +105,11 @@ class GreedyBandit:
             np.random.random() for _ in range(len(self.allowed_jumps))
         ]
 
-    def get_step_value(self, step):
+    def get_step_value(self, action_idx):
         if self.has_constant_step and self.step_value:
             return self.step_value
         else:
-            return 1.0 / self.actions_counts[step]
+            return 1.0 / self.actions_counts[action_idx]
 
     def select_action(self):
         """Select the jump to perform
@@ -146,18 +142,18 @@ class GreedyBandit:
             reward obtain at time step 'step'
         """
         if np.random.random() > self.epsilon:
-            step_idx = self.select_action(step)
+            action_idx = self.select_action(step)
         else:
-            step_idx = np.random.randint(len(self.allowed_jumps))
+            action_idx = np.random.randint(len(self.allowed_jumps))
 
-        reward = self.environment.get_reward(self.allowed_jumps[step_idx])
+        reward = self.environment.get_reward(self.allowed_jumps[action_idx])
 
         # update the cumulative reward of our agent
         # by recursively computing the average
-        self.actions_counts[step_idx] += 1
-        step_value = self.get_step_value(step_idx)
-        self.expected_rewards[step_idx] += (step_value) * (
-            reward - self.expected_rewards[step_idx]
+        self.actions_counts[action_idx] += 1
+        step_value = self.get_step_value(action_idx)
+        self.expected_rewards[action_idx] += (step_value) * (
+            reward - self.expected_rewards[action_idx]
         )  # noqa
         return reward
 
@@ -170,3 +166,60 @@ class GreedyBandit:
             reward = self.jump(step)
             self.reward = self.reward + (1.0 / step) * (reward - self.reward)
             self.rewards_per_timesteps[step - 1] = self.reward
+
+
+class UCBBandits(GreedyBandit):
+    """
+    Greedy bandit that can operate on various environments
+
+    Attributes
+    ----------
+
+    confidence_level: float
+        parameter that controls the amout of uncertainty that affects the agent
+    """
+
+    def __init__(
+        self,
+        allowed_jumps,
+        timesteps,
+        environment,
+        epsilon=0,
+        has_constant_step=False,
+        step_value=0.5,
+        confidence_level=0.1,
+        *kwargs
+    ) -> None:
+
+        assert confidence_level > 0
+
+        super().__init__(
+            allowed_jumps,
+            timesteps,
+            environment,
+            epsilon,
+            has_constant_step,
+            step_value,
+            **kwargs
+        )
+
+        self.confidence_level = self.confidence_level
+
+    def select_action(self, step):
+        """Select the jump to perform
+
+        Parameters
+        ----------
+
+        step : int
+            current timesptep of the exploration
+
+        Returns
+        -------
+            int
+            index of the selected action
+        """
+        uncertainty = self.confidence_level * np.sqrt(
+            np.log(step) / self.actions_counts
+        )
+        return np.argmax(self.expected_rewards + uncertainty)
