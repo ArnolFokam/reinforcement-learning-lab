@@ -164,7 +164,7 @@ class GreedyBandit:
         # by recursively computing the average
         self.expected_rewards[action_idx] += (step_value) * (
             reward - self.expected_rewards[action_idx]
-        )  # noqa
+        )
         return reward
 
     def explore(self):
@@ -205,12 +205,7 @@ class UCBBandit(GreedyBandit):
         assert c > 0
 
         super().__init__(
-            allowed_actions,
-            timesteps,
-            environment,
-            epsilon,
-            step_value,
-            **kwargs  # noqa
+            allowed_actions, timesteps, environment, epsilon, step_value, **kwargs
         )
 
         self.c = c
@@ -250,12 +245,7 @@ class GradientsBandit(GreedyBandit):
     ) -> None:
 
         super().__init__(
-            allowed_actions,
-            timesteps,
-            environment,
-            epsilon,
-            step_value,
-            **kwargs  # noqa
+            allowed_actions, timesteps, environment, epsilon, step_value, **kwargs
         )
 
         self.preferences = np.zeros(len(allowed_actions))
@@ -279,12 +269,10 @@ class GradientsBandit(GreedyBandit):
         )
 
         # update preference for other actions
-        other_actions_idx = np.delete(
-            range(len(self.allowed_actions)), action_idx
-        )  # noqa
+        other_actions_idx = np.delete(range(len(self.allowed_actions)), action_idx)
         self.preferences[other_actions_idx] -= (
             step_value * (reward - reward_baseline) * probs[other_actions_idx]
-        )  # noqa
+        )
 
     def select_action(self, step):
         """Select the jump to perform
@@ -305,6 +293,4 @@ class GradientsBandit(GreedyBandit):
             1,
             replace=False,
             p=stable_softmax(self.preferences),
-        )[
-            0
-        ]  # noqa
+        )[0]
